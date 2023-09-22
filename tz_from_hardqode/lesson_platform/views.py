@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from .models import *
@@ -24,7 +25,7 @@ class ProductLessonView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, product_id):
-        product = Product.objects.get(id=product_id)
+        product = get_object_or_404(Product, id=product_id)
         if ProductAccess.objects.filter(user=request.user, product=product).first():
             lessons = Lesson.objects.filter(product=product)
             data = {}
